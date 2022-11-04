@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { getAllTalkers } = require('./utils/handleTalkers');
+const talkersRouter = require('./routes/talkersRouter');
 
 const app = express();
 app.use(bodyParser.json());
@@ -18,14 +18,4 @@ app.listen(PORT, () => {
 });
 
 //Talkers
-app.get('/talker', async (req, res) => {
-  const talkers = await getAllTalkers();
-  res.status(200).send(talkers)
-});
-
-app.get('/talker/:id', async (req, res) => {
-  const talkers = await getAllTalkers();
-  const talker = talkers.find(({ id }) => id === Number(req.params.id));
-  if (!talker) return res.status(404).send({ message: 'Pessoa palestrante não encontrada' });
-  res.status(200).send(talker)
-});
+app.use('/talker', talkersRouter);
