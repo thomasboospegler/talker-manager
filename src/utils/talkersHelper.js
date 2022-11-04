@@ -9,6 +9,19 @@ const getAllTalkers = async () => {
   return talkers;
 };
 
+const getNextId = async () => {
+  const content = await getAllTalkers();
+  const biggerId = Math.max(...content.map(({ id }) => id));
+  return biggerId + 1;
+};
+
+const writeNewTalker = async (talker) => {
+  const content = await getAllTalkers();
+  await fs.writeFile(talkerPath, JSON.stringify([...content, talker]));
+};
+
 module.exports = {
   getAllTalkers,
+  getNextId,
+  writeNewTalker,
 };
