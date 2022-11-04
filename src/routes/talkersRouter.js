@@ -2,7 +2,8 @@ const express = require('express');
 const { validateToken, validateData } = require('../middlewares');
 
 const router = express.Router();
-const { getAllTalkers, getNextId, writeNewTalker, updateTalker } = require('../utils/talkersHelper');
+const { getAllTalkers, getNextId,
+  writeNewTalker, updateTalker } = require('../utils/talkersHelper');
 
 router.get('/', async (req, res) => {
   const talkers = await getAllTalkers();
