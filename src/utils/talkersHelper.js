@@ -10,18 +10,25 @@ const getAllTalkers = async () => {
 };
 
 const getNextId = async () => {
-  const content = await getAllTalkers();
-  const biggerId = Math.max(...content.map(({ id }) => id));
+  const data = await getAllTalkers();
+  const biggerId = Math.max(...data.map(({ id }) => id));
   return biggerId + 1;
 };
 
 const writeNewTalker = async (talker) => {
-  const content = await getAllTalkers();
-  await fs.writeFile(talkerPath, JSON.stringify([...content, talker]));
+  const data = await getAllTalkers();
+  await fs.writeFile(talkerPath, JSON.stringify([...data, talker], 2));
+};
+
+const updateTalker = async (talker) => {
+  const data = await getAllTalkers();
+  const newData = data.map((talk) => (talk.id === talker.id ? talker : talk));
+  await fs.writeFile(talkerPath, JSON.stringify(newData, 2));
 };
 
 module.exports = {
   getAllTalkers,
   getNextId,
   writeNewTalker,
+  updateTalker,
 };
