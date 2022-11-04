@@ -3,7 +3,7 @@ const { validateToken, validateData } = require('../middlewares');
 
 const router = express.Router();
 const { getAllTalkers, getNextId,
-  writeNewTalker, updateTalker } = require('../utils/talkersHelper');
+  writeNewTalker, updateTalker, deleteTalker } = require('../utils/talkersHelper');
 
 router.get('/', async (req, res) => {
   const talkers = await getAllTalkers();
@@ -21,7 +21,7 @@ router.post('/', validateToken, validateData, async (req, res) => {
   const talkerData = req.body;
   const newTalker = { id: await getNextId(), ...talkerData };
   await writeNewTalker(newTalker);
-  res.status(201).json(newTalker);
+  return res.status(201).json(newTalker);
 });
 
 router.put('/:id', validateToken, validateData, async (req, res) => {
@@ -29,7 +29,13 @@ router.put('/:id', validateToken, validateData, async (req, res) => {
   const talkerData = req.body;
   const newTalker = { id: Number(id), ...talkerData };
   await updateTalker(newTalker);
-  res.status(200).json(newTalker);
+  return res.status(200).json(newTalker);
+});
+
+router.delete('/:id', validateToken, async (req, res) => {
+  const { id } = req.params;
+  await deleteTalker(id);
+  return res.status(204).json({ message: 'Pessoa palestrante deletada com sucesso' });
 });
 
 module.exports = router;
