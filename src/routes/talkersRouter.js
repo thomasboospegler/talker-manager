@@ -3,11 +3,18 @@ const { validateToken, validateData } = require('../middlewares');
 
 const router = express.Router();
 const { getAllTalkers, getNextId,
-  writeNewTalker, updateTalker, deleteTalker } = require('../utils/talkersHelper');
+  writeNewTalker, updateTalker, searchTalker,
+  deleteTalker } = require('../utils/talkersHelper');
 
 router.get('/', async (req, res) => {
   const talkers = await getAllTalkers();
   return res.status(200).send(talkers);
+});
+
+router.get('/search', validateToken, async (req, res) => {
+  const { q } = req.query;
+  const talkers = await searchTalker(q);
+  return res.status(200).json(talkers);
 });
 
 router.get('/:id', async (req, res) => {

@@ -32,10 +32,17 @@ const deleteTalker = async (id) => {
   await fs.writeFile(talkerPath, JSON.stringify(newData, 2));
 };
 
+const searchTalker = async (q) => {
+  const data = await getAllTalkers();
+  const newData = data.filter((talker) => !q || talker.name.includes(q));
+  return newData;
+};
+
 module.exports = {
   getAllTalkers,
   getNextId,
   writeNewTalker,
   updateTalker,
   deleteTalker,
+  searchTalker,
 };
